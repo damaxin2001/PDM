@@ -36,7 +36,7 @@ class MainActivity : ComponentActivity() {
                            }
                        }
                        composable("home") {
-                           Text(text = "Home")
+                           AddListTypesView()
                        }
                    }
 

@@ -26,44 +26,36 @@ fun LoginView(modifier: Modifier = Modifier,
                 onLoginSuccess: () -> Unit = {}
               ) {
 
-    val viewModel  : LoginViewModel = LoginViewModel()
-    val state by viewModel.state.collectAsState()
-
-    var username by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
+    val viewModel by remember { mutableStateOf(LoginViewModel()) }
+    val state = viewModel.state
 
     Box(
         modifier = modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            TextField(value = username,
-                onValueChange = {
-                    username = it
-                },
+            TextField(value = state.value.username,
+                onValueChange = viewModel::onUsernameChange,
                 placeholder = {
                     Text(text = "email")
                 }
             )
             Spacer(modifier = Modifier.height(16.dp))
-            TextField(value = password,
-                onValueChange = {
-                    password = it
-                },
+            TextField(value = state.value.password,
+                onValueChange = viewModel::onPasswordChange,
                 placeholder = {
                     Text(text = "password")
                 }
             )
             Spacer(modifier = Modifier.height(16.dp))
             Button(onClick = {
-                viewModel.login(username,password,
-                onLoginSuccess = onLoginSuccess)
+                viewModel.login(onLoginSuccess = onLoginSuccess)
             }) {
                 Text(text = "Login")
             }
             Spacer(modifier = Modifier.height(16.dp))
-            Text(text = state.error ?: "")
-            if (state.isLoading)
+            Text(text = state.value.error ?: "")
+            if (state.value.isLoading)
                 CircularProgressIndicator()
         }
     }

@@ -24,14 +24,13 @@ class HomeViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(ArticleState())
     val uiState: StateFlow<ArticleState> = _uiState.asStateFlow()
 
-
     fun fetchArticles() {
         _uiState.value = ArticleState(
             isLoading = true
         )
         val client = OkHttpClient()
         val request = Request.Builder()
-            .url("https://newsapi.org/v2/top-headlines?country=us&category=sports&apiKey=<API KEY>")
+            .url("https://newsapi.org/v2/top-headlines?country=us&category=sports&apiKey=1765f87e4ebc40229e80fd0f75b6416c")
             .build()
 
         client.newCall(request).enqueue(object : Callback {

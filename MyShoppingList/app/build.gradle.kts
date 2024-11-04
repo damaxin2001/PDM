@@ -1,16 +1,17 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    id("com.google.gms.google-services")
 }
 
 android {
-    namespace = "ipca.example.newsapp"
-    compileSdk = 34
+    namespace = "ipca.pdm.myshoppinglist"
+    compileSdk = 35
 
     defaultConfig {
-        applicationId = "ipca.example.newsapp"
+        applicationId = "ipca.pdm.myshoppinglist"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -68,18 +69,9 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    // define a BOM and its version
-    implementation(platform("com.squareup.okhttp3:okhttp-bom:4.12.0"))
+    // Firebase BoM
+    implementation(platform("com.google.firebase:firebase-bom:33.5.1"))
+    implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-auth")
 
-    // define any required OkHttp artifacts without version
-    implementation("com.squareup.okhttp3:okhttp")
-    implementation("com.squareup.okhttp3:logging-interceptor")
-
-    // ViewModel
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.6")
-    // ViewModel utilities for Compose
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.6")
-
-    implementation("io.coil-kt.coil3:coil-compose:3.0.0-rc01")
-    implementation("io.coil-kt.coil3:coil-network-okhttp:3.0.0-rc01")
 }

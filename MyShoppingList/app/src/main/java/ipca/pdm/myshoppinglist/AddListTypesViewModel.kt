@@ -8,7 +8,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
 data class AddListState(
-
+    val listItems : List<ListItem> = emptyList(),
     val isLoading: Boolean = false,
     val error: String? = null
 )
@@ -18,29 +18,24 @@ class AddListTypesViewModel : ViewModel() {
     var state = mutableStateOf(AddListState())
         private set
 
-    fun addList( onAddListSuccess: () -> Unit) {
-        val listType = hashMapOf(
-            "name" to "New list",
-            "description" to "New list description"
-        )
+    fun addList() {
+        ListItemRepository.add(
+            ListItem("title", "description")
+        ){
 
-        var currentUser = Firebase.auth.currentUser
-
-        if (currentUser == null) {
-            state.value = state.value.copy(error = "User not logged in")
-            return
         }
+    }
 
-        val db = Firebase.firestore
-        db.collection("listTypes")
-            .add(listType)
-            .addOnSuccessListener { documentReference ->
-                Log.d(TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
-            }
-            .addOnFailureListener { e ->
-                Log.w(TAG, "Error adding document", e)
-            }
+    fun loadListTypes(){
+        ListItemRepository.getAll { listItems ->
+            state.value = state.value.copy(
+                listItems = listItems
+            )
 
+            for (item in listItems){
+                Log.d("TAG", item.name?:"no name")
+            }
+        }
     }
 
 }

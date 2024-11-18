@@ -1,19 +1,17 @@
-package ipca.pdm.myshoppinglist
+package ipca.pdm.myshoppinglist.repositories
 
-import android.annotation.SuppressLint
 import android.util.Log
-import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-
+import ipca.pdm.myshoppinglist.TAG
+import ipca.pdm.myshoppinglist.models.ListItem
 
 
 object ListItemRepository {
 
     val db = Firebase.firestore
 
-    fun add( listItem: ListItem,  onAddListSuccess: () -> Unit) {
-
+    fun add(listItem: ListItem, onAddListSuccess: () -> Unit) {
 
         /*
         var currentUser = Firebase.auth.currentUser
@@ -37,17 +35,13 @@ object ListItemRepository {
 
     fun getAll(onSuccess: (List<ListItem>) -> Unit){
         db.collection("listTypes")
-
             .addSnapshotListener { value, error ->
-                val listItems = mutableListOf<ListItem>()
-                value?.let{
-                    for (document in it.documents) {
-                        document.data?.let { it1 ->
-                            listItems.add(ListItem.fromMap(it1))
-                        }
-                    }
+                val listItems = value?.documents?.mapNotNull {
+                    val itemList  = it.toObject(ListItem::class.java)
+                    itemList?.docId = it.id
+                    itemList
                 }
-                onSuccess(listItems)
+                listItems?.let {  onSuccess(it) }
             }
     }
 

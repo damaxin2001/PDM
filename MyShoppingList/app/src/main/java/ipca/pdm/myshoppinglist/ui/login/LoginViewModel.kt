@@ -1,13 +1,11 @@
-package ipca.pdm.myshoppinglist
+package ipca.pdm.myshoppinglist.ui.login
 
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import ipca.pdm.myshoppinglist.TAG
 
 
 data class LoginState(

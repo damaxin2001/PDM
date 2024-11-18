@@ -1,26 +1,25 @@
-package ipca.pdm.myshoppinglist
+package ipca.pdm.myshoppinglist.ui.home
 
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
+import ipca.pdm.myshoppinglist.models.ListItem
+import ipca.pdm.myshoppinglist.repositories.ListItemRepository
 
-data class AddListState(
+data class ListState(
     val listItems : List<ListItem> = emptyList(),
     val isLoading: Boolean = false,
     val error: String? = null
 )
 
-class AddListTypesViewModel : ViewModel() {
+class ListTypesViewModel : ViewModel() {
 
-    var state = mutableStateOf(AddListState())
+    var state = mutableStateOf(ListState())
         private set
 
     fun addList() {
         ListItemRepository.add(
-            ListItem("title", "description")
+            ListItem("","title", "description")
         ){
 
         }

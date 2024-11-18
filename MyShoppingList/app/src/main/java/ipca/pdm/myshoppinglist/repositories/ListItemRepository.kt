@@ -1,6 +1,7 @@
 package ipca.pdm.myshoppinglist.repositories
 
 import android.util.Log
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import ipca.pdm.myshoppinglist.TAG
@@ -13,14 +14,17 @@ object ListItemRepository {
 
     fun add(listItem: ListItem, onAddListSuccess: () -> Unit) {
 
-        /*
+
         var currentUser = Firebase.auth.currentUser
 
-        if (currentUser == null) {
-            state.value = state.value.copy(error = "User not logged in")
-            return
-        }*/
+        //if (currentUser == null) {
+        //    state.value = state.value.copy(error = "User not logged in")
+        //    return
+        //}
 
+        currentUser?.uid?.let {
+            listItem.owners = arrayListOf(it)
+        }
 
         db.collection("listTypes")
             .add(listItem)
@@ -35,6 +39,7 @@ object ListItemRepository {
 
     fun getAll(onSuccess: (List<ListItem>) -> Unit){
         db.collection("listTypes")
+            .whereArrayContains("owners", Firebase.auth.currentUser?.uid!!)
             .addSnapshotListener { value, error ->
                 val listItems = value?.documents?.mapNotNull {
                     val itemList  = it.toObject(ListItem::class.java)

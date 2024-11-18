@@ -98,8 +98,8 @@ fun AddListTypesViewPreview() {
         ListTypesViewContent(
             state =
             ListState(listItems = arrayListOf(
-                ListItem("", "Compras de Casa", "As compras que vão para casa"),
-                ListItem("", "Compras de Escritório", "As compras que vão para o trablho")
+                ListItem("", "Compras de Casa", "As compras que vão para casa" , null),
+                ListItem("", "Compras de Escritório", "As compras que vão para o trablho", null)
 
             )
             )

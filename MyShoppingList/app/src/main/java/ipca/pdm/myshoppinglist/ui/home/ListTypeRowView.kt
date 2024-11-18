@@ -39,6 +39,7 @@ fun ListTypeRowViewPreview(){
     MyShoppingListTheme {
         ListTypeRowView(listItem =  ListItem("",
                                             "Compras de casa",
-                                        "As compras que são para casa"))
+                                        "As compras que são para casa",
+            null))
     }
 }

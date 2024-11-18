@@ -19,7 +19,7 @@ class ListTypesViewModel : ViewModel() {
 
     fun addList() {
         ListItemRepository.add(
-            ListItem("","title", "description")
+            ListItem("","title", "description", null)
         ){
 
         }

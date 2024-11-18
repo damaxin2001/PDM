@@ -3,6 +3,7 @@ package ipca.pdm.myshoppinglist.models
 data class ListItem(
     var docId: String?,
     var name: String?,
-    var description: String?) {
-    constructor():this(null, null, null){}
+    var description: String?,
+    var owners : List<String>?) {
+    constructor():this(null, null, null, null){}
 }

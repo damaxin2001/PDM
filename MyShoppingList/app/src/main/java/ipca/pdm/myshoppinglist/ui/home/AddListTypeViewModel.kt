@@ -36,7 +36,7 @@ class AddListTypeViewModel : ViewModel() {
     }
 
     fun addList(){
-        ListItemRepository.add(listItem = ListItem("", name, description)){
+        ListItemRepository.add(listItem = ListItem("", name, description, null)){
 
         }
     }

@@ -12,32 +12,35 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import ipca.example.newsapp.models.Article
-import ipca.example.newsapp.models.encodeURL
+import ipca.example.newsapp.ui.home.ArticleRowView
 import ipca.example.newsapp.ui.theme.NewsAppTheme
 
 @Composable
-fun HomeView( modifier: Modifier = Modifier ,
+fun BookmarksView( modifier: Modifier = Modifier ,
               onArticleClick: (String) -> Unit = {}) {
+
+    val context = LocalContext.current
 
     val viewModel : HomeViewModel = viewModel()
     val uiState by viewModel.uiState.collectAsState()
 
-    HomeViewContent(
+    BookmarksViewContent(
         modifier = modifier,
         uiState = uiState,
         onArticleClick = onArticleClick
     )
 
     LaunchedEffect(key1 = true) {
-        viewModel.fetchArticles()
+        viewModel.getArticles(context)
     }
 }
 
 @Composable
-fun HomeViewContent(
+fun BookmarksViewContent(
     modifier: Modifier = Modifier,
     uiState: ArticleState,
     onArticleClick: (String) -> Unit = {}) {
@@ -74,7 +77,7 @@ fun HomeViewContent(
 @Composable
 fun HomeViewPreview() {
     NewsAppTheme {
-        HomeViewContent(
+        BookmarksViewContent(
             uiState = ArticleState(
                 articles = arrayListOf(
                     Article(

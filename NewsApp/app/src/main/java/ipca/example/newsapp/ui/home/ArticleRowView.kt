@@ -1,4 +1,4 @@
-package ipca.example.newsapp
+package ipca.example.newsapp.ui.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
@@ -19,6 +19,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
+import ipca.example.newsapp.R
 import ipca.example.newsapp.models.Article
 import ipca.example.newsapp.models.toStringDate
 import java.util.Date

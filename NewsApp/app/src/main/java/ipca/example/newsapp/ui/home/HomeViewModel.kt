@@ -1,4 +1,4 @@
-package ipca.example.newsapp
+package ipca.example.newsapp.ui.home
 
 import androidx.lifecycle.ViewModel
 import ipca.example.newsapp.models.Article

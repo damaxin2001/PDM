@@ -1,4 +1,4 @@
-package ipca.example.newsapp
+package ipca.example.newsapp.ui
 
 import android.webkit.WebView
 import android.webkit.WebViewClient
@@ -6,10 +6,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.viewinterop.AndroidView
 import ipca.example.newsapp.models.Article
-import java.util.Date
 
 @Composable
-fun ArticleDetailView(url: String) {
+fun ArticleDetailView(article: Article) {
     AndroidView(factory = { context ->
         WebView(context).apply {
             settings.javaScriptEnabled = true
@@ -20,7 +19,7 @@ fun ArticleDetailView(url: String) {
         }
     },
         update = { webView ->
-            webView.loadUrl(url ?: "")
+            webView.loadUrl(article.url ?: "")
         })
 }
 
@@ -28,6 +27,6 @@ fun ArticleDetailView(url: String) {
 @Preview(showBackground = true)
 @Composable
 fun ArticleDetailViewPreview() {
-    ArticleDetailView(url =   "http://google.com")
+   // ArticleDetailView(url =   "http://google.com")
 }
 

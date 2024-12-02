@@ -1,4 +1,4 @@
-package ipca.example.newsapp
+package ipca.example.newsapp.ui.home
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -61,7 +61,7 @@ fun HomeViewContent(
                     _, item ->
                 ArticleRowView(modifier = Modifier
                     .clickable {
-                        onArticleClick(item.url?.encodeURL() ?: "")
+                        onArticleClick(item.toJsonString())
                     },
                     article = item)
             }

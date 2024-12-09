@@ -1,10 +1,17 @@
 package ipca.example.newsapp.ui.home
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import ipca.example.newsapp.models.Article
+import ipca.example.newsapp.respository.ArticlesAPI
+import ipca.example.newsapp.respository.ArticlesRepository
+import ipca.example.newsapp.respository.ResultWrapper
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.OkHttpClient
@@ -12,60 +19,47 @@ import okhttp3.Request
 import okhttp3.Response
 import org.json.JSONObject
 import java.io.IOException
+import javax.inject.Inject
 
-data class ArticleState (
-    val articles : ArrayList<Article> = arrayListOf<Article>(),
+data class ArticleState  (
+    val articles : List<Article> = arrayListOf<Article>(),
     val isLoading  : Boolean = false,
     val errorMessage: String = "",
 )
 
-class HomeViewModel : ViewModel() {
+@HiltViewModel
+class HomeViewModel @Inject constructor(
+    val articlesRepository: ArticlesRepository
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ArticleState())
     val uiState: StateFlow<ArticleState> = _uiState.asStateFlow()
 
     fun fetchArticles() {
-        _uiState.value = ArticleState(
-            isLoading = true
-        )
-        val client = OkHttpClient()
-        val request = Request.Builder()
-            .url("https://newsapi.org/v2/top-headlines?country=us&category=sports&apiKey=1765f87e4ebc40229e80fd0f75b6416c")
-            .build()
-
-        client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                e.printStackTrace()
-                _uiState.value = ArticleState(
-                    errorMessage = e.message ?: "",
-                    isLoading = false
-                )
-            }
-
-            override fun onResponse(call: Call, response: Response) {
-                response.use {
-                    if (!response.isSuccessful) throw IOException("Unexpected code $response")
-
-                    var articlesResult = arrayListOf<Article>()
-                    val result = response.body!!.string()
-
-                    val jsonObject = JSONObject(result)
-                    val status = jsonObject.getString("status")
-                    if (status == "ok") {
-                        val articlesArray = jsonObject.getJSONArray("articles")
-                        for (index in 0 until articlesArray.length()) {
-                            val articleObject = articlesArray.getJSONObject(index)
-                            val article = Article.fromJson(articleObject)
-                            articlesResult.add(article)
-                            println(article.urlToImage)
-                        }
+        articlesRepository
+            .fetchArticles("top-headlines?country=us&category=sports")
+            .onEach { result ->
+                when(result){
+                    is ResultWrapper.Success ->{
                         _uiState.value = ArticleState(
-                            articles = articlesResult,
+                            articles = result.data?: emptyList(),
                             isLoading = false
                         )
                     }
+                    is ResultWrapper.Loading ->{
+                        _uiState.value = ArticleState(
+                            isLoading = true
+                        )
+                    }
+                    is ResultWrapper.Error ->{
+                        _uiState.value = ArticleState(
+                            isLoading = false,
+                            errorMessage = result.message?:""
+                        )
+                    }
                 }
-            }
-        })
+
+            }.launchIn(viewModelScope)
+
     }
 }

@@ -9,6 +9,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import ipca.example.newsapp.AppDatabase
 import ipca.example.newsapp.models.Article
@@ -31,7 +32,9 @@ fun MyTopBar(title : String,
     TopAppBar(
         title = {
             if (article != null) {
-                Text(text = article.title?:"")
+                Text(text = article.title?:"",
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis)
             }else{
                 Text(text = title)
             }

@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import ipca.example.newsapp.models.Article
 import ipca.example.newsapp.ui.home.ArticleRowView
@@ -23,9 +24,8 @@ import ipca.example.newsapp.ui.theme.NewsAppTheme
 fun BookmarksView( modifier: Modifier = Modifier ,
               onArticleClick: (String) -> Unit = {}) {
 
-    val context = LocalContext.current
 
-    val viewModel : HomeViewModel = viewModel()
+    val viewModel : BookmarksViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsState()
 
     BookmarksViewContent(
@@ -35,7 +35,7 @@ fun BookmarksView( modifier: Modifier = Modifier ,
     )
 
     LaunchedEffect(key1 = true) {
-        viewModel.getArticles(context)
+        viewModel.fetchArticles()
     }
 }
 

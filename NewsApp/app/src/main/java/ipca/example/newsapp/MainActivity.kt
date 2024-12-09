@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import dagger.hilt.android.AndroidEntryPoint
 import ipca.example.newsapp.models.Article
 import ipca.example.newsapp.ui.ArticleDetailView
 import ipca.example.newsapp.ui.bookmarks.BookmarksView
@@ -27,6 +28,8 @@ import ipca.example.newsapp.ui.home.HomeView
 import ipca.example.newsapp.ui.theme.NewsAppTheme
 import org.json.JSONObject
 
+
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,6 +61,7 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier.padding(innerPadding))  {
                         composable( route = Screen.Home.route){
                             isBaseScreen = true
+                            article = null
                             HomeView(
                                 modifier = Modifier.padding(innerPadding),
 
@@ -68,6 +72,7 @@ class MainActivity : ComponentActivity() {
                         }
                         composable(route = Screen.Bookmarks.route) {
                             isBaseScreen = true
+                            article = null
                             BookmarksView(){
                                 navController.navigate("article/${it}")
                             }

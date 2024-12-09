@@ -13,6 +13,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import ipca.example.newsapp.models.Article
 import ipca.example.newsapp.models.encodeURL
@@ -22,11 +23,11 @@ import ipca.example.newsapp.ui.theme.NewsAppTheme
 fun HomeView( modifier: Modifier = Modifier ,
               onArticleClick: (String) -> Unit = {}) {
 
-    val viewModel : HomeViewModel = viewModel()
+    val viewModel : HomeViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsState()
 
     HomeViewContent(
-        modifier = modifier,
+        modifier = Modifier,
         uiState = uiState,
         onArticleClick = onArticleClick
     )

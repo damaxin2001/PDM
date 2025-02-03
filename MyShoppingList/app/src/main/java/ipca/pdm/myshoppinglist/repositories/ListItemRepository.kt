@@ -1,53 +1,40 @@
 package ipca.pdm.myshoppinglist.repositories
 
-import android.util.Log
-import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import ipca.pdm.myshoppinglist.TAG
 import ipca.pdm.myshoppinglist.models.ListItem
-
 
 object ListItemRepository {
 
-    val db = Firebase.firestore
+    private val db: FirebaseFirestore = Firebase.firestore
+    private const val COLLECTION_NAME = "shoppingLists"
 
-    fun add(listItem: ListItem, onAddListSuccess: () -> Unit) {
-
-
-        var currentUser = Firebase.auth.currentUser
-
-        //if (currentUser == null) {
-        //    state.value = state.value.copy(error = "User not logged in")
-        //    return
-        //}
-
-        currentUser?.uid?.let {
-            listItem.owners = arrayListOf(it)
-        }
-
-        db.collection("listTypes")
-            .add(listItem)
-            .addOnSuccessListener { documentReference ->
-                Log.d(TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
+    fun getAll(userId: String, onSuccess: (List<ListItem>) -> Unit) {
+        db.collection(COLLECTION_NAME)
+            .whereEqualTo("userId", userId)
+            .get()
+            .addOnSuccessListener { result ->
+                val listItems = result.toObjects(ListItem::class.java)
+                onSuccess(listItems)
             }
             .addOnFailureListener { e ->
-                Log.w(TAG, "Error adding document", e)
             }
-
     }
-
-    fun getAll(onSuccess: (List<ListItem>) -> Unit){
-        db.collection("listTypes")
-            .whereArrayContains("owners", Firebase.auth.currentUser?.uid!!)
-            .addSnapshotListener { value, error ->
-                val listItems = value?.documents?.mapNotNull {
-                    val itemList  = it.toObject(ListItem::class.java)
-                    itemList?.docId = it.id
-                    itemList
+    fun getListById(listId: String, onSuccess: (ListItem) -> Unit, onError: (String) -> Unit) {
+        db.collection(COLLECTION_NAME)
+            .document(listId)
+            .get()
+            .addOnSuccessListener { document ->
+                val listItem = document.toObject(ListItem::class.java)
+                if (listItem != null) {
+                    onSuccess(listItem)
+                } else {
+                    onError("Lista não encontrada")
                 }
-                listItems?.let {  onSuccess(it) }
+            }
+            .addOnFailureListener { e ->
+                onError(e.message ?: "Erro ao carregar a lista")
             }
     }
-
 }

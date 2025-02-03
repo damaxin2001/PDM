@@ -79,12 +79,62 @@ fun CalculatorView(modifier: Modifier = Modifier ){
         calculatorBrain.operation = CalculatorBrain.Operation.getOp(op)
     }
 
+    val onBackspacePress: () -> Unit = {
+        display = calculatorBrain.backspace(display)
+        userIsInTheMiddleOfTyping = display != "0"
+    }
+
+    val onClearPress: () -> Unit = {
+        display = calculatorBrain.clear().toString()
+        userIsInTheMiddleOfTyping = false
+    }
+
     Column (modifier = modifier){
         Text(
             modifier = Modifier.fillMaxWidth(),
             text = display,
             textAlign = TextAlign.End,
             style = MaterialTheme.typography.displayLarge)
+        Row {
+            CalcButton(
+                modifier = Modifier.weight(1f),
+                label = "C",
+                isOperation = true,
+                onButtonPress = { onClearPress() }
+            )
+            CalcButton(
+                modifier = Modifier.weight(1f),
+                label = "⌫",
+                isOperation = true,
+                onButtonPress = { onBackspacePress() }
+            )
+        }
+        Row {
+            CalcButton(
+                modifier = Modifier.weight(1f),
+                label = "√",
+                isOperation = true,
+                onButtonPress = onOperationPressed
+            )
+            CalcButton(
+                modifier = Modifier.weight(1f),
+                label = "±",
+                isOperation = true,
+                onButtonPress = onOperationPressed
+            )
+            CalcButton(
+                modifier = Modifier.weight(1f),
+                label = "%",
+                isOperation = true,
+                onButtonPress = onOperationPressed
+            )
+            CalcButton(
+                modifier = Modifier.weight(1f),
+                label = "Rand",
+                isOperation = true,
+                onButtonPress = onOperationPressed
+            )
+        }
         Row{
             CalcButton(
                 modifier = Modifier.weight(1f),

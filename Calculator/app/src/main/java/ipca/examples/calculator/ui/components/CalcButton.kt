@@ -21,8 +21,8 @@ fun CalcButton(modifier: Modifier = Modifier,
                onButtonPress : (String) -> Unit ) {
     Button(
         modifier = modifier
-            .aspectRatio(1f)
-            .padding(4.dp),
+            .aspectRatio(if(label == "C" || label == "⌫") 2f else 1f)
+            .padding(2.dp),
         colors = ButtonDefaults.run { buttonColors( if (isOperation) Orange else  Pink40) },
         onClick = { onButtonPress(label) }
     ) {

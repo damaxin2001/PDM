@@ -37,5 +37,17 @@ class CalculatorBrain {
         return result
     }
 
+    fun backspace(currentDisplay: String): String {
+        return if (currentDisplay.length > 1) {
+            currentDisplay.dropLast(1)
+        } else {
+            "0"
+        }
+    }
 
+    fun clear(): Double {
+        operand = 0.0
+        operation = null
+        return 0.0
+    }
 }

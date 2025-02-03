@@ -28,11 +28,11 @@ import ipca.pdm.myshoppinglist.ui.theme.MyShoppingListTheme
 import ipca.pdm.myshoppinglist.ui.theme.appFontBold16
 
 @Composable
-fun AddListTypeView(modifier: Modifier = Modifier,
-                    navController : NavController = rememberNavController()
+fun AddListTypeView(
+    modifier: Modifier = Modifier,
+    navController: NavController = rememberNavController()
 ) {
-
-    val viewModel : AddListTypeViewModel = viewModel()
+    val viewModel: AddListTypeViewModel = viewModel()
     val state = viewModel.state
 
     Box(
@@ -40,15 +40,16 @@ fun AddListTypeView(modifier: Modifier = Modifier,
         contentAlignment = Alignment.Center
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-
-            TextField(value = state.value.name,
+            TextField(
+                value = state.value.name,
                 onValueChange = viewModel::onNameChange,
                 placeholder = {
                     Text(text = "list name")
                 }
             )
             Spacer(modifier = Modifier.height(16.dp))
-            TextField(value = state.value.description,
+            TextField(
+                value = state.value.description,
                 onValueChange = viewModel::onDescriptionChange,
                 placeholder = {
                     Text(text = "list description")
@@ -56,14 +57,13 @@ fun AddListTypeView(modifier: Modifier = Modifier,
             )
             Spacer(modifier = Modifier.height(16.dp))
             Button(onClick = {
-                viewModel.addList()
-                // todo : back
-                navController.popBackStack()
+                viewModel.addList {
+                    navController.popBackStack()
+                }
             }) {
                 Text(text = "Add")
             }
             Spacer(modifier = Modifier.height(16.dp))
-
         }
     }
 }

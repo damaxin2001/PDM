@@ -12,17 +12,15 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import ipca.example.newsapp.models.Article
 import ipca.example.newsapp.ui.home.ArticleRowView
 import ipca.example.newsapp.ui.theme.NewsAppTheme
 
 @Composable
 fun BookmarksView( modifier: Modifier = Modifier ,
-              onArticleClick: (String) -> Unit = {}) {
+                   onArticleClick: (String) -> Unit = {}) {
 
 
     val viewModel : BookmarksViewModel = hiltViewModel()
@@ -85,6 +83,7 @@ fun HomeViewPreview() {
                         description = "Description 1",
                         url = "https://www.google.com",
                         urlToImage = null,
+                        tipo = "tipo 1",
                         publishedAt = null
                     ),
                     Article(
@@ -92,6 +91,7 @@ fun HomeViewPreview() {
                         description = "Description 2",
                         url = "https://www.google.com",
                         urlToImage = null,
+                        tipo = "tipo 2",
                         publishedAt = null
                     ),
                 )

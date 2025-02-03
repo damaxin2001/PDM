@@ -3,6 +3,7 @@ package ipca.example.newsapp.ui.home
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -42,8 +43,10 @@ fun ArticleRowView(modifier: Modifier = Modifier, article: Article) {
             Image(
                 modifier = Modifier
                     .width(120.dp)
-                    .height(120.dp),
-                painter = painterResource(id = R.drawable.baseline_photo_camera_back_24),
+                    .height(120.dp)
+                    .padding(6.dp)
+                    .clip(RoundedCornerShape(8.dp)),
+                painter = painterResource(id = R.drawable.publicoimage),
                 contentDescription = "Article Image"
             )
         }
@@ -52,19 +55,22 @@ fun ArticleRowView(modifier: Modifier = Modifier, article: Article) {
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 style = MaterialTheme.typography.titleMedium
-                )
+            )
             Text(text = article.description ?: "",
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,)
 
-            Text(modifier = Modifier.padding(top = 8.dp), text = article.publishedAt?.toStringDate() ?: "")
+            Row(modifier = Modifier.padding(top = 8.dp)) {
+                Text(text = article.publishedAt?.toStringDate() ?: "", style = MaterialTheme.typography.bodySmall)
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(text = article.tipo ?: "", style = MaterialTheme.typography.bodySmall)
+            }
         }
     }
 }
-
 @Preview(showBackground = true)
 @Composable
 fun ArticleRowViewPreview() {
-    val article = Article(title = "title", description = "description", url = "url", urlToImage = null, publishedAt = Date())
+    val article = Article(title = "title", description = "description", url = "url", urlToImage = null, tipo = "tipo", publishedAt = Date())
     ArticleRowView(article = article)
 }

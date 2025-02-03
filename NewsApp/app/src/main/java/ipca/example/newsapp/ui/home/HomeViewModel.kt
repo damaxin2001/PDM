@@ -1,5 +1,6 @@
 package ipca.example.newsapp.ui.home
 
+import androidx.compose.animation.core.copy
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -25,6 +26,7 @@ data class ArticleState  (
     val articles : List<Article> = arrayListOf<Article>(),
     val isLoading  : Boolean = false,
     val errorMessage: String = "",
+    val searchQuery: String = ""
 )
 
 @HiltViewModel
@@ -37,7 +39,7 @@ class HomeViewModel @Inject constructor(
 
     fun fetchArticles() {
         articlesRepository
-            .fetchArticles("top-headlines?country=us&category=sports")
+            .fetchArticles("")
             .onEach { result ->
                 when(result){
                     is ResultWrapper.Success ->{

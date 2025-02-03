@@ -7,8 +7,8 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import ipca.pdm.myshoppinglist.TAG
 import ipca.pdm.myshoppinglist.models.ListItem
+import ipca.pdm.myshoppinglist.repositories.AddItemRepository
 import ipca.pdm.myshoppinglist.repositories.ListItemRepository
-
 
 data class AddListTypeState(
     var name: String = "",
@@ -35,10 +35,17 @@ class AddListTypeViewModel : ViewModel() {
         state.value = state.value.copy(description = newValue)
     }
 
-    fun addList(){
-        ListItemRepository.add(listItem = ListItem("", name, description, null)){
+    fun addList(onSuccess: () -> Unit) {
+        val userId = Firebase.auth.currentUser?.uid ?: return
+        val listItem = ListItem(
+            id = "",
+            name = name,
+            description = description,
+            userId = userId
+        )
 
+        AddItemRepository.add(listItem) {
+            onSuccess()
         }
     }
-
 }

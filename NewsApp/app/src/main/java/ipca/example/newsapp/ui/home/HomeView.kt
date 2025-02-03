@@ -21,20 +21,28 @@ import ipca.example.newsapp.ui.theme.NewsAppTheme
 
 @Composable
 fun HomeView( modifier: Modifier = Modifier ,
-              onArticleClick: (String) -> Unit = {}) {
+              onArticleClick: (String) -> Unit = {},
+              searchQuery: String = "") {
 
     val viewModel : HomeViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsState()
-
+    val filteredArticles = if(searchQuery.isEmpty()){
+        uiState.articles
+    }else{
+        uiState.articles.filter { article ->
+            article.title?.contains(searchQuery, ignoreCase = true) == true
+        }
+    }
     HomeViewContent(
         modifier = Modifier,
-        uiState = uiState,
+        uiState = uiState.copy(articles = filteredArticles),
         onArticleClick = onArticleClick
     )
 
     LaunchedEffect(key1 = true) {
         viewModel.fetchArticles()
     }
+
 }
 
 @Composable
@@ -83,6 +91,7 @@ fun HomeViewPreview() {
                         description = "Description 1",
                         url = "https://www.google.com",
                         urlToImage = null,
+                        tipo = "tipo 1",
                         publishedAt = null
                     ),
                     Article(
@@ -90,6 +99,7 @@ fun HomeViewPreview() {
                         description = "Description 2",
                         url = "https://www.google.com",
                         urlToImage = null,
+                        tipo = "tipo 2",
                         publishedAt = null
                     ),
                 )

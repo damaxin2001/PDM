@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "850365699205",
-    "project_id": "myshoppinglist-185cf",
-    "storage_bucket": "myshoppinglist-185cf.firebasestorage.app"
+    "project_number": "1058538464286",
+    "project_id": "myshoppinglist-b6744",
+    "storage_bucket": "myshoppinglist-b6744.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:850365699205:android:047b3559c14906dcb285ec",
+        "mobilesdk_app_id": "1:1058538464286:android:1a4e6004a77a476253ba0f",
         "android_client_info": {
           "package_name": "ipca.pdm.myshoppinglist"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAw9OmJ6IOqig8M_Ov5nsFREzBHKNHLnNE"
+          "current_key": "AIzaSyAh1hjCwpoAiJfz43fbt3tJTqvejvPRwjQ"
         }
       ],
       "services": {

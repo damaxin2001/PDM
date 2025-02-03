@@ -1,4 +1,4 @@
-package ipca.example.newsapp.respository;
+package ipca.example.newsapp.respository
 
 import ipca.example.newsapp.models.Article
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -7,24 +7,22 @@ import okhttp3.Callback
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
-import org.json.JSONObject
+import org.json.JSONArray
 import java.io.IOException
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
-const val BASE_API = "https://newsapi.org/v2/"
-const val API_KEY = "&apiKey=1765f87e4ebc40229e80fd0f75b6416c"
+const val API_URL = "https://www.publico.pt/api/list/ultimas"
 
 object ArticlesAPI {
 
     val client = OkHttpClient()
 
-    //top-headlines?country=us&category=sports
     @Throws(IOException::class)
     suspend fun fetchArticles(path: String): List<Article>  {
 
         val request = Request.Builder()
-            .url("$BASE_API$path$API_KEY")
+            .url("$API_URL$path")
             .build()
 
         val resultRequest = client.newCall(request).await()
@@ -36,18 +34,14 @@ object ArticlesAPI {
         val articlesResult = arrayListOf<Article>()
         val result = resultRequest.body!!.string()
 
-        val jsonObject = JSONObject(result)
-        val status = jsonObject.getString("status")
-        if (status == "ok") {
-            val articlesArray = jsonObject.getJSONArray("articles")
-            for (index in 0 until articlesArray.length()) {
-                val articleObject = articlesArray.getJSONObject(index)
-                val article = Article.fromJson(articleObject)
-                articlesResult.add(article)
-                println(article.urlToImage)
-            }
-
+        val jsonArray = JSONArray(result)
+        for (index in 0 until jsonArray.length()) {
+            val articleObject = jsonArray.getJSONObject(index)
+            val article = Article.fromJson(articleObject)
+            articlesResult.add(article)
+            println(article.urlToImage)
         }
+
         return articlesResult
 
     }
